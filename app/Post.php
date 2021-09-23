@@ -10,10 +10,15 @@ class Post extends Model
         'title',
         'slug',
         'content',
-        'cat_id'
+        'cat_id',
+        'tags_id'
     ];
 
     public function category() {
         return $this->belongsTo('App\Category', 'cat_id', 'id');
+    }
+
+    public function tags() {
+        return $this->belongsToMany('App\Tag');
     }
 }

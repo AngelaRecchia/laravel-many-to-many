@@ -22,4 +22,5 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/', 'PostController@index')->name('index');
     Route::resource('/posts','PostController');
     Route::resource('/categories','CategoryController');
+    Route::resource('/tags','TagController');
 });

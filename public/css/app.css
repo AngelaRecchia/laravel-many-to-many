@@ -12,6 +12,10 @@ a:visited {
   font-family: "Montserrat", sans-serif;
 }
 
+label {
+  margin-right: 5px;
+}
+
 #logo {
   font-size: 25px;
   color: white;
@@ -62,6 +66,18 @@ a:hover {
 
 .big {
   font-size: 23px;
+}
+
+.tags {
+  font-size: 10px;
+}
+
+h6 a {
+  color: black;
+}
+
+h6 a :hover {
+  text-decoration: none;
 }
 
 /*!

@@ -37695,4 +37695,4 @@ module.exports = __webpack_require__(/*! C:\Users\angel\Desktop\Boolean\mamp_pub
 
 /***/ })
 
-/*****
+/******/ });

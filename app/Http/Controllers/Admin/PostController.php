@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -19,7 +20,8 @@ class PostController extends Controller
     {
         $posts = Post::all();
         $categories = Category::all();
-        return view('admin.posts.index', compact('posts', 'categories'));
+        $tags = Tag::all();
+        return view('admin.posts.index', compact('posts', 'categories', 'tags'));
     }
 
     /**
@@ -30,7 +32,8 @@ class PostController extends Controller
     public function create()
     {   
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -65,6 +68,10 @@ class PostController extends Controller
         $newPost->fill($data);
         $newPost->save();
 
+        if(array_key_exists('tags', $data)) {
+           $newPost->tags()->attach($data['tags']); 
+        }
+        
         return redirect()->route('admin.posts.index');
     }
 
@@ -77,8 +84,9 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::where('slug', $slug)->first();
-        $category = Category::where('id', $post->cat_id)->first();
-        return view('admin.posts.show', compact('post', 'category'));
+        $cat = Category::where('id', $post->cat_id)->first();
+        $tags = Tag::where('tag_id');
+        return view('admin.posts.show', compact('post', 'cat'));
     }
 
     /**
@@ -90,7 +98,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {   
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -127,6 +136,10 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if(array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        }
+
         return redirect()->route('admin.posts.index')->with('updated', 'Post successfully updated');
     }
 
@@ -139,6 +152,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        $post->tags()->detach();
         return redirect()->route('admin.posts.index')->with('deleted', 'The post has been deleted');
     }
 }
